@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/postage');
+var users = require('./routes/users');
 var math = require('./routes/math');
 var urlencodedParser;
 var app = express();
@@ -25,16 +25,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/math', function(res, req) {
+app.post('/math', function(res, req) {
     var math = {
-        firstNum: req.body.number1,
-        secondNum: req.body.number2,
-        operator: req.body.operator1
+        firstNum: res.body.number1,
+        secondNum: res.body.number2,
+        operator: res.body.operator1
     }
 
-    console.log(eval(math.firstNum + math.operator + math.secondNum));
     var answer = eval(math.firstNum + math.operator + math.secondNum)
-    res.render('math', {
+    req.render('math', {
         num1: math.firstNum,
         num2: math.secondNum,
         operator1: math.operator,
@@ -42,22 +41,19 @@ app.use('/math', function(res, req) {
     });
 })
 
-app.use('/postage', function(res, req) {
+app.post('/postage', function(req, res) {
 
-    // console.log(res.body);
-    // console.log(req.body);
-    var typeOfLetter = res.body.mailType;
-    var weightOfLetter = res.body.weight;
+    var typeOfLetter = req.body.mailType;
+    var weightOfLetter = req.body.weight;
     var priceTotal = calculateRate(typeOfLetter, weightOfLetter);
-    // console.log('Type of Letter: ' + typeOfLetter);
     var price;
-    if (priceTotal == 'Package too Large.') {
+    if (priceTotal == 'Package too Large') {
         price = 'Package Too Large for this type of mailer'
     } else {
         price = priceTotal;
     }
 
-    req.render('postage', {
+    res.render('postage', {
         title: 'Postage Calculator',
         typeOfLetter: typeOfLetter,
         weight: weightOfLetter,
@@ -187,7 +183,7 @@ function calculateRate(typeOfLetter, weightOfLetter) {
                     break;
 
                 case (weightOfLetter > 13):
-                    price: 'Package too Large';
+                    price = 'Package too Large';
                     break;
             }
             break;
