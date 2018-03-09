@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>
-        <%= title %>
-    </title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-
-<body>
-    <h1>
-        <%= title %>
-    </h1>
-    <p>Welcome to
-        <%= title %>
+<% include partials/header %>
+    <h1>Math Answers</h1>
+    <p>Here are the values you entered</p>
+    <p>Number #1:
+        <%= num1 %>
     </p>
-</body>
+    <p>Number #2:
+        <%= num2 %>
+    </p>
+    <p>Operator:
+        <%= operator1 %>
+    </p>
+    <p>The Answer is:
+        <%= answer %>
+    </p>
 
-</html>
+    <% include partials/footer %>

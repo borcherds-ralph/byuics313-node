@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/postage');
 var math = require('./routes/math');
 var urlencodedParser;
 var app = express();
@@ -25,16 +25,46 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/math', math);
-// app.post('/math', urlencodedParser, function(req, res) {
+app.use('/math', function(res, req) {
+    var math = {
+        firstNum: req.body.number1,
+        secondNum: req.body.number2,
+        operator: req.body.operator1
+    }
 
-//     var item1 = parseInt(req.body.number1);
-//     var item2 = parseInt(req.body.number2);
-//     var operator = req.body.operator1;
-//     response = eval(item1 + operator + item2);
-//     console.log(response)
-// })
+    console.log(eval(math.firstNum + math.operator + math.secondNum));
+    var answer = eval(math.firstNum + math.operator + math.secondNum)
+    res.render('math', {
+        num1: math.firstNum,
+        num2: math.secondNum,
+        operator1: math.operator,
+        answer: answer
+    });
+})
 
+app.use('/postage', function(res, req) {
+
+    // console.log(res.body);
+    // console.log(req.body);
+    var typeOfLetter = res.body.mailType;
+    var weightOfLetter = res.body.weight;
+    var priceTotal = calculateRate(typeOfLetter, weightOfLetter);
+    // console.log('Type of Letter: ' + typeOfLetter);
+    var price;
+    if (priceTotal == 'Package too Large.') {
+        price = 'Package Too Large for this type of mailer'
+    } else {
+        price = priceTotal;
+    }
+
+    req.render('postage', {
+        title: 'Postage Calculator',
+        typeOfLetter: typeOfLetter,
+        weight: weightOfLetter,
+        price: price
+    })
+
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,5 +83,157 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+
+function calculateRate(typeOfLetter, weightOfLetter) {
+
+    if ((typeOfLetter == 'Letters (Stamped)' || typeOfLetter == 'Letters (Metered)') && weightOfLetter > 3.5) {
+        typeOfLetter = 'Large Envelopes (Flats)';
+    }
+    var price;
+    switch (typeOfLetter) {
+        case 'Letters (Stamped)':
+            switch (true) {
+                case (weightOfLetter <= 1):
+                    price = 0.50;
+                    break;
+
+                case (weightOfLetter > 1 && weightOfLetter <= 2):
+                    price = 0.71;
+                    break;
+
+                case (weightOfLetter > 3 && weightOfLetter <= 3):
+                    price = 0.92;
+                    break;
+
+                case (weightOfLetter > 3 && weightOfLetter <= 3.5):
+                    price = 1.13;
+                    break;
+            }
+            break;
+
+        case 'Letters (Metered)':
+            switch (true) {
+                case (weightOfLetter <= 1):
+                    price = 0.47;
+                    break;
+
+                case (weightOfLetter > 1 && weightOfLetter <= 2):
+                    price = 0.68;
+                    break;
+
+                case (weightOfLetter > 2 && weightOfLetter <= 3):
+                    price = 0.89;
+                    break;
+
+                case (weightOfLetter > 3 && weightOfLetter <= 3.5):
+                    price = 1.10;
+                    break;
+            }
+            break;
+
+        case 'Large Envelopes (Flats)':
+            switch (true) {
+                case (weightOfLetter <= 1.0):
+                    price = 1;
+                    break;
+
+                case (weightOfLetter > 1 && weightOfLetter <= 2.0):
+                    price = 1.21;
+                    break;
+
+                case (weightOfLetter > 2 && weightOfLetter <= 3.0):
+                    price = 1.42;
+                    break;
+
+                case (weightOfLetter > 3 && weightOfLetter <= 4.0):
+                    price = 1.63;
+                    break;
+
+                case (weightOfLetter > 4 && weightOfLetter <= 5.0):
+                    price = 1.84;
+                    break;
+
+                case (weightOfLetter > 5 && weightOfLetter <= 6.0):
+                    price = 2.05;
+                    break;
+
+                case (weightOfLetter > 6 && weightOfLetter <= 7.0):
+                    price = 2.26;
+                    break;
+
+                case (weightOfLetter > 7 && weightOfLetter <= 8.0):
+                    price = 2.47;
+                    break;
+
+                case (weightOfLetter > 8 && weightOfLetter <= 9.0):
+                    price = 2.68;
+                    break;
+
+                case (weightOfLetter > 9 && weightOfLetter <= 10.0):
+                    price = 2.89;
+                    break;
+
+                case (weightOfLetter > 10 && weightOfLetter <= 11.0):
+                    price = 3.10;
+                    break;
+
+                case (weightOfLetter > 11 && weightOfLetter <= 12.0):
+                    price = 3.31;
+                    break;
+
+                case (weightOfLetter > 12 && weightOfLetter <= 13.0):
+                    price = 3.52;
+                    break;
+
+                case (weightOfLetter > 13):
+                    price: 'Package too Large';
+                    break;
+            }
+            break;
+
+        case ('First-Class Package Service-Retail'):
+            switch (true) {
+                case (weightOfLetter <= 4):
+                    price = 3.5;
+                    break;
+
+                case (weightOfLetter > 4 && weightOfLetter <= 8):
+                    price = 3.75;
+                    break;
+
+                case (weightOfLetter > 8 && weightOfLetter <= 9):
+                    price = 4.1;
+                    break;
+
+                case (weightOfLetter > 9 && weightOfLetter <= 10):
+                    price = 4.45;
+                    break;
+
+                case (weightOfLetter > 10 && weightOfLetter <= 11):
+                    price = 4.8;
+                    break;
+
+                case (weightOfLetter > 11 && weightOfLetter <= 12):
+                    price = 5.15;
+                    break;
+
+                case (weightOfLetter > 12 && weightOfLetter <= 13):
+                    price = 5.5;
+                    break;
+
+                case (weightOfLetter > 13):
+                    price = 'Package too Large';
+                    break;
+            }
+            break;
+
+        default:
+            price: 'unknown package';
+            break;
+    }
+
+    return price;
+}
 
 module.exports = app;

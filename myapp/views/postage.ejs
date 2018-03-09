@@ -1,0 +1,19 @@
+<% include partials/header %>
+
+    <h1>
+        <%= title %>
+    </h1>
+    <p>You selected the following mailer:</p>
+    <ul>
+        <li>Type of letter selected:
+            <%= typeOfLetter %>
+        </li>
+        <li>Weight of letter:
+            <%= weight %>oz
+        </li>
+    </ul>
+
+    <p>The postage to mail this is: $
+        <%= price %>
+    </p>
+    <% include partials/footer %>
