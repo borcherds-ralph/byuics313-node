@@ -37,7 +37,7 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set our application port
-app.set('port', 5000);
+app.set('nodeport', 9000);
 
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
@@ -163,3 +163,5 @@ app.use(function(req, res, next) {
 
 // start the express server
 app.listen(app.get('port'), () => console.log(`App started on port ${app.get('port')}`));
+
+module.exports = app;
