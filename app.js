@@ -37,7 +37,7 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set our application port
-app.set('nodeport', 9000);
+app.set('nodeport', process.env.port || 9000);
 
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
