@@ -86,8 +86,8 @@ var sessionChecker = (req, res, next) => {
 };
 
 // route for Home-Page
-app.get('/', sessionChecker, (req, res) => {
-    res.redirect('/login');
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Home Page', message: 'Please log into the dashboard to see your info.' })
 });
 
 
