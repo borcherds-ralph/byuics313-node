@@ -193,3 +193,5 @@ app.use(function(req, res, next) {
 
 // start the express server
 app.listen(app.get('nodeport'), () => console.log(`App started on port ${app.get('nodeport')}`));
+
+module.exports = app;
