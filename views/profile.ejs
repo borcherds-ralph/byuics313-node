@@ -1,0 +1,47 @@
+<%  include partials/head %>
+<body  class="container">
+<%  include partials/header %>
+    
+<div class="container row">
+    <div class="jumbotron col-sm-4 pull-center">
+        <form action="/signup" method="post">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" />
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="text" name="email" />
+            </div>
+            <div>
+                <label>Address 1:</label>
+                <input type="text" name="address1" />
+            </div>
+            <div>
+                <label>Address 2:</label>
+                <input type="text" name="address2" />
+            </div>
+            <div>
+                <label>Zip</label>
+                <input type="text" name="zip" />
+            </div>
+            <div>
+                <label>City</label>
+                <input type="text" name="city" />
+            </div>
+            <div>
+                <label>State</label>
+                <input type="text" name="state" />
+            </div>
+            
+            
+            <div>
+                <input class="btn btn-primary" type="submit" value="Update Profile" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<%  include partials/footer %>
+</body>
+</html>

@@ -8,6 +8,7 @@ const { Client } = require('pg');
 var session = require('express-session');
 var morgan = require('morgan');
 var User = require('./modules/user');
+var googleAnalytics = require('./modules/jwt.js');
 
 var app = express();
 
@@ -21,14 +22,12 @@ var host = db_url.host.substr(0, db_url.host.indexOf(':'));
 var pgport = db_url.host.substr(db_url.host.indexOf(':') + 1, db_url.host.length);
 var db = db_url.path.substr(db_url.path.indexOf('/') + 1, db_url.path.length);
 
-
 // Connect to the PostgreSQL server
 const client = new Client({
     host: host,
     user: user,
     database: db,
     password: pass
-        //port: pgport
 });
 
 client.connect();
@@ -42,12 +41,9 @@ app.set('nodeport', process.env.PORT || 9000);
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
 
-
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('routes', path.join(__dirname, 'routes'));
-
 
 // Body Parser Middle Ware
 app.use(bodyParser.json());
@@ -87,20 +83,27 @@ var sessionChecker = (req, res, next) => {
 
 // route for Home-Page
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Home Page', message: 'Please log into the dashboard to see your info.' })
+    res.render('index', {
+        title: 'Home Page',
+        message: 'Please log into the dashboard to see your info.'
+    })
 });
 
 
 // route for user signup
 app.route('/signup')
     .get(sessionChecker, (req, res) => {
-        res.sendFile(__dirname + '/public/signup.html');
+        res.render('signup', { title: 'Sign-up Page' });
     })
     .post((req, res) => {
         User.create({
                 username: req.body.username,
                 email: req.body.email,
+                city: req.body.city,
+                state: req.body.state,
+                zipcode: req.body.zipcode,
                 password: req.body.password
+
             })
             .then(user => {
                 req.session.user = user.dataValues;
@@ -115,7 +118,7 @@ app.route('/signup')
 // route for user Login
 app.route('/login')
     .get(sessionChecker, (req, res) => {
-        res.sendFile(__dirname + '/public/login.html');
+        res.render('login', { title: 'Login Page' });
     })
     .post((req, res) => {
         var username = req.body.username,
@@ -133,11 +136,15 @@ app.route('/login')
         });
     });
 
-
 // route for user's dashboard
 app.get('/dashboard', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
-        res.sendFile(__dirname + '/public/dashboard.html');
+        res.render('dashboard', {
+            title: 'Personal Tracking Dashboard',
+            zipcode: req.session.user.zipcode,
+            city: req.session.user.city,
+            state: req.session.user.state
+        });
     } else {
         res.redirect('/login');
     }
@@ -154,6 +161,29 @@ app.get('/logout', (req, res) => {
     }
 });
 
+// Check AJAX calls for user registration
+// Check to see if a username is taken or not
+app.get('/validateUsername', (req, res) => {
+    User.findOne({ where: { username: req.query.uname } }).then(function(user) {
+        if (!user) {
+            res.json(false);
+        } else {
+            res.json(true);
+        }
+    });
+
+});
+
+app.get('/validateEmail', (req, res) => {
+    User.findOne({ where: { email: req.query.email } }).then(function(user) {
+        if (!user) {
+            res.json(false);
+        } else {
+            res.json(true);
+        }
+    });
+
+});
 
 // route for handling 404 requests(unavailable routes)
 app.use(function(req, res, next) {
@@ -164,4 +194,4 @@ app.use(function(req, res, next) {
 // start the express server
 app.listen(app.get('nodeport'), () => console.log(`App started on port ${app.get('nodeport')}`));
 
-//module.exports = app;
+module.exports = app;

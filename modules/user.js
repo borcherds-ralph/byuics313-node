@@ -9,16 +9,34 @@ var User = sequelize.define('users', {
     username: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false
+        allowNull: false,
+        required: 'Please enter a user name'
     },
     email: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false
+        allowNull: false,
+        required: 'E-mail is required'
     },
     password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        required: 'a password is required'
+    },
+    city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        required: 'Your City is require'
+    },
+    state: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        required: 'Your State is Required'
+    },
+    zipcode: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        required: 'Your zipcode is required for customized location info'
     },
     createdAt: {
         type: Sequelize.DATE,

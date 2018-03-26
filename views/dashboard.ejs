@@ -1,0 +1,52 @@
+<%  include partials/head %>
+<body  class="container" onLoad="updateCityState('<%= zipcode %>', '<%= city %>', '<%= state %>');">
+<%  include partials/header %>
+    
+<div class="container row">
+    <h1>Hi, Welcome to your Dashboard</h1>
+    <p>Here is your local forecast</p>
+    <section id="forecast">
+        <h2 id="hiddenitems">Weather forecast table.</h2>
+        <div class="forecast" id="forecastTable">
+            <div class="cityname" id="cityname"></div>
+            <div class="flex-order">Weather Forecast Data</div>
+            <div class="flex-order1 bolding odd" id="summary1">Currently</div>
+            <div class="flex-order1 odd" id="summary2"></div>
+            <div class="flex-order2 bolding even" id="high">Forecast High</div>
+            <div class="flex-order2 even" id="hightemp"></div>
+            <div class="flex-order3 bolding odd" id="low">Forecast Low</div>
+            <div class="flex-order3 odd" id="lowtemp"></div>
+            <div class="flex-order4 bolding even" id="chanceperc">Chance Precipitation</div>
+            <div class="flex-order4 even" id="chancepercperc"></div>
+            <div class="flex-order5 bolding odd" id="maxwind">Today's Max Wind</div>
+            <div class="flex-order5 odd" id="maxwindspeed"></div>
+            <div class="flex-order9 bolding hiddenitems even" id="windchill">Current Windchill</div>
+            <div class="flex-order9 hiddenitems even" id="windchillnow"></div>
+            <div class="flex-order6 bolding" id="10day">10 Day Forecast</div>
+            <div class="flex-order7 odd" id="day0"></div>
+            <div class="flex-order7 odd" id="day1"></div>
+            <div class="flex-order7 odd" id="day2"></div>
+            <div class="flex-order7 odd" id="day3"></div>
+            <div class="flex-order7 odd" id="day4"></div>
+            <div class="flex-order7 odd" id="day5"></div>
+            <div class="flex-order7 odd" id="day6"></div>
+            <div class="flex-order7 odd" id="day7"></div>
+            <div class="flex-order7 odd" id="day8"></div>
+            <div class="flex-order7 odd" id="day9"></div>
+            <div class="flex-order8 even" id="day0temp"></div>
+            <div class="flex-order8 even" id="day1temp"></div>
+            <div class="flex-order8 even" id="day2temp"></div>
+            <div class="flex-order8 even" id="day3temp"></div>
+            <div class="flex-order8 even" id="day4temp"></div>
+            <div class="flex-order8 even" id="day5temp"></div>
+            <div class="flex-order8 even" id="day6temp"></div>
+            <div class="flex-order8 even" id="day7temp"></div>
+            <div class="flex-order8 even" id="day8temp"></div>
+            <div class="flex-order8 even" id="day9temp"></div>
+        </div>
+    </section>
+</div>
+<%  include partials/footer %>
+
+</body>
+</html>

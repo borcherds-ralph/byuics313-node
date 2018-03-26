@@ -1,0 +1,122 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+
+/************************************************************
+*
+*                   Forecast Data 
+*
+************************************************************/
+
+.hiddenitems {
+    display: none;
+}
+
+#forecast {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    max-width: 650px;
+    justify-content: flex-start;
+    padding: 0 10px;
+}
+
+.cityname {
+    width: 100%;
+    background-color: #0e113b;
+    color: #fff;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding: 5px 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    text-align: center
+}
+
+.forecast {
+    padding: 0;
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.flex-order,
+.flex-order1,
+.flex-order2,
+.flex-order3,
+.flex-order4,
+.flex-order5,
+.flex-order6,
+.flex-order7,
+.flex-order8,
+.flex-order9 {
+    padding: 2px 0;
+    text-align: center;
+    border: 0px solid;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    line-height: 2em;
+}
+
+.flex-order {
+    width: 100%;
+    background-color: #334e4d;
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.odd {
+    background-color: #b0f7f4;
+}
+
+.even {
+    background-color: #f5b57e;
+}
+
+.flex-order1,
+.flex-order3,
+.flex-order5 {
+    width: 50%;
+    background-color: #b0f7f4;
+}
+
+.flex-order2,
+.flex-order4,
+.flex-order9 {
+    width: 50%;
+    background-color: #f5b57e;
+}
+
+.flex-order6 {
+    order: 8;
+    width: 100%;
+    font-weight: bold;
+    background-color: #334e4d;
+    color: #fff;
+    padding: 5px 0;
+    font-size: 1.1em;
+}
+
+.flex-order7 {
+    order: 9;
+    width: 10%;
+    background-color: #fff7b6;
+}
+
+.flex-order8 {
+    order: 10;
+    width: 10%;
+    background-color: #b0f7f4;
+}
