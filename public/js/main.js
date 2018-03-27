@@ -32,7 +32,7 @@ function updateCityState(zipValue, city, state) {
             // client key to be able to use the zipcodeapi.com webiste to get date
             var clientKey = 'js-1bXvnApFrAvwwBfDTkUtvYNh6CulyFDUktpERvCk73lioLE4s66GnNJEQrQAzk0p';
 
-            var url = "http://www.zipcodeapi.com/rest/" + clientKey + "/info.json/" + zipValue + "/radians";
+            var url = "//www.zipcodeapi.com/rest/" + clientKey + "/info.json/" + zipValue + "/radians";
             ajax1.onreadystatechange =
                 function() {
 
@@ -44,8 +44,8 @@ function updateCityState(zipValue, city, state) {
                         var state = data['state'];
 
                         // These 6 lines get and write the weather data to the weather table
-                        var wuurl = "http://api.wunderground.com/api/" + apikey + "/conditions/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
-                        var wuurl2 = "http://api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
+                        var wuurl = "//api.wunderground.com/api/" + apikey + "/conditions/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
+                        var wuurl2 = "//api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
                         localStorage.clear();
                         readWeatherFile(wuurl, divId, isJSON);
                         readWeatherFile(wuurl2, divId, isJSON);
@@ -58,8 +58,8 @@ function updateCityState(zipValue, city, state) {
             ajax1.send();
         } else {
             // These 6 lines get and write the weather data to the weather table
-            var wuurl = "http://api.wunderground.com/api/" + apikey + "/conditions/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
-            var wuurl2 = "http://api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
+            var wuurl = "//api.wunderground.com/api/" + apikey + "/conditions/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
+            var wuurl2 = "//api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
             localStorage.clear();
             readWeatherFile(wuurl, divId, isJSON);
             readWeatherFile(wuurl2, divId, isJSON);
