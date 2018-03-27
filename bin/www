@@ -12,8 +12,8 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('nodeport', port);
+var nodeport = normalizePort(process.env.PORT || '3000');
+app.set('nodeport', nodeport);
 
 /**
  * Create HTTP server.
@@ -58,9 +58,9 @@ function onError(error) {
         throw error;
     }
 
-    var bind = typeof port === 'string' ?
-        'Pipe ' + port :
-        'Port ' + port;
+    var bind = typeof nodeport === 'string' ?
+        'Pipe ' + nodeport :
+        'Port ' + nodeport;
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
