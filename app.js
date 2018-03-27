@@ -85,7 +85,8 @@ var sessionChecker = (req, res, next) => {
 app.get('/', (req, res) => {
     res.render('index', {
         title: 'Home Page',
-        message: 'Please log into the dashboard to see your info.'
+        message: 'Please log into the dashboard to see your info.',
+        pgname: 'login'
     })
 });
 
@@ -93,7 +94,10 @@ app.get('/', (req, res) => {
 // route for user signup
 app.route('/signup')
     .get(sessionChecker, (req, res) => {
-        res.render('signup', { title: 'Sign-up Page' });
+        res.render('signup', {
+            title: 'Sign-up Page',
+            pgname: 'signup'
+        });
     })
     .post((req, res) => {
         User.create({
@@ -118,7 +122,8 @@ app.route('/signup')
 // route for user Login
 app.route('/login')
     .get(sessionChecker, (req, res) => {
-        res.render('login', { title: 'Login Page' });
+
+        res.render('login', { title: 'Login Page', pgname: 'login' });
     })
     .post((req, res) => {
         var username = req.body.username,
@@ -143,7 +148,8 @@ app.get('/dashboard', (req, res) => {
             title: 'Personal Tracking Dashboard',
             zipcode: req.session.user.zipcode,
             city: req.session.user.city,
-            state: req.session.user.state
+            state: req.session.user.state,
+            pgname: 'dashboard'
         });
     } else {
         res.redirect('/login');

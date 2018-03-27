@@ -54,7 +54,7 @@ function updateCityState(zipValue, city, state) {
                         // document.getElementById('serverState').innerHTML += "Ready State: " + ajax1.readyState + "  Status: " + ajax1.status + "<BR>";
                     }
                 }
-            ajax1.open("GET", url, false);
+            ajax1.open("GET", url, true);
             ajax1.send();
         } else {
             // These 6 lines get and write the weather data to the weather table
