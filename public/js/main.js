@@ -7,7 +7,9 @@
  * 
  * 
  ********************************************/
-
+var ajax1 = getHTTPObject();
+var ajax2 = getHTTPObject();
+var ajax3 = getHTTPObject();
 
 
 function getHTTPObject() {
@@ -18,7 +20,7 @@ function getHTTPObject() {
     return xmlhttp;
 }
 
-function updateCityState(zipvalue, city, state) {
+function updateCityState(zipValue, city, state) {
     // These next 3 lines are for getting the data from Weather Underground.
     // The apikey is unique to each user and must be updated for your own site
     var apikey = 'd704f31a50bce41f'
@@ -26,7 +28,7 @@ function updateCityState(zipvalue, city, state) {
     var isJSON = true;
     if (ajax1) {
         // var zipValue = document.getElementById("zipcode").value;
-        if (zipValue >= 5 && city < > '') {
+        if (zipValue >= 5 && city == '') {
             // client key to be able to use the zipcodeapi.com webiste to get date
             var clientKey = 'js-1bXvnApFrAvwwBfDTkUtvYNh6CulyFDUktpERvCk73lioLE4s66GnNJEQrQAzk0p';
 
@@ -144,4 +146,52 @@ function writeDatatolocalStorage(response, divId, isJSON) {
             }
         }
     }
+}
+
+function writeLocalWeather() {
+    storeArry = {};
+    for (i = 0; i < localStorage.length; i++) {
+        var a = localStorage.key(i);
+        var b = localStorage.getItem(a);
+        storeArry[a] = b;
+    }
+
+    document.getElementById('cityname').innerHTML = storeArry.full;
+    document.getElementById('maxwindspeed').innerHTML = storeArry.maxwind;
+    document.getElementById('summary2').innerHTML = storeArry.temp_f + " F";
+    document.getElementById('hightemp').innerHTML = storeArry.todayhigh + " F";
+    document.getElementById('lowtemp').innerHTML = storeArry.todaylow + " F";
+    document.getElementById('chancepercperc').innerHTML = storeArry.percip + " %";
+    document.getElementById('day0').innerHTML = storeArry.day0;
+    document.getElementById('day1').innerHTML = storeArry.day1;
+    document.getElementById('day2').innerHTML = storeArry.day2;
+    document.getElementById('day3').innerHTML = storeArry.day3;
+    document.getElementById('day4').innerHTML = storeArry.day4;
+    document.getElementById('day5').innerHTML = storeArry.day5;
+    document.getElementById('day6').innerHTML = storeArry.day6;
+    document.getElementById('day7').innerHTML = storeArry.day7;
+    document.getElementById('day8').innerHTML = storeArry.day8;
+    document.getElementById('day9').innerHTML = storeArry.day9;
+    document.getElementById('day0temp').innerHTML = storeArry.day0high;
+    document.getElementById('day1temp').innerHTML = storeArry.day1high;
+    document.getElementById('day2temp').innerHTML = storeArry.day2high;
+    document.getElementById('day3temp').innerHTML = storeArry.day3high;
+    document.getElementById('day4temp').innerHTML = storeArry.day4high;
+    document.getElementById('day5temp').innerHTML = storeArry.day5high;
+    document.getElementById('day6temp').innerHTML = storeArry.day6high;
+    document.getElementById('day7temp').innerHTML = storeArry.day7high;
+    document.getElementById('day8temp').innerHTML = storeArry.day8high;
+    document.getElementById('day9temp').innerHTML = storeArry.day9high;
+    if (storeArry.windchill_string !== 'NA') {
+        document.getElementById('windchill').classList.remove('hiddenitems');
+        document.getElementById('windchillnow').classList.remove('hiddenitems');
+        document.getElementById('windchillnow').innerHTML = storeArry.windchill_f;
+    } else {
+        document.getElementById('windchill').classList.add('hiddenitems');
+        document.getElementById('windchillnow').classList.add('hiddenitems');
+    }
+    var show = document.querySelector("#forecast");
+    show.style.display = "none";
+    show.style.display = "flex";
+
 }
