@@ -27,7 +27,8 @@ const client = new Client({
     host: host,
     user: user,
     database: db,
-    password: pass
+    password: pass,
+    port: pgport
 });
 
 client.connect();
