@@ -131,6 +131,7 @@ app.route('/login')
 
         User.findOne({ where: { username: username } }).then(function(user) {
             if (!user) {
+
                 res.redirect('/login');
             } else if (!user.validPassword(password)) {
                 res.redirect('/login');
@@ -151,6 +152,7 @@ app.get('/dashboard', (req, res) => {
             state: req.session.user.state,
             pgname: 'dashboard'
         });
+        console.log(req.session);
     } else {
         res.redirect('/login');
     }
