@@ -58,7 +58,9 @@ a {
 .flex-order6,
 .flex-order7,
 .flex-order8,
-.flex-order9 {
+.flex-order9,
+.flex-order10,
+.flex-order11 {
     padding: 2px 0;
     text-align: center;
     border: 0px solid;
@@ -111,12 +113,154 @@ a {
 
 .flex-order7 {
     order: 9;
-    width: 10%;
+    width: 9%;
     background-color: #fff7b6;
 }
 
 .flex-order8 {
     order: 10;
-    width: 10%;
+    width: 9%;
     background-color: #b0f7f4;
+}
+
+.flex-order11 {
+    order: 11;
+    width: 9%;
+    background-color: #b0f7f4;
+}
+
+#day9temp,
+#day9lowtemp,
+#day9 {
+    width: 10%;
+}
+
+
+/********************************************************
+*
+*   Red Colors for invalid values
+*
+*********************************************************/
+
+#badEmail,
+#badUsername {
+    color: #ff0000;
+    font-weight: 700;
+    font-size: 1em;
+    order: 3;
+}
+
+
+/********************************************************
+*
+*   Form Entry formating
+*
+*********************************************************/
+
+.jumbotron {
+    width: 50em;
+    background-color: #e8fdf9;
+}
+
+fieldset {
+    width: 45em;
+    margin: 10px 10px 30px 10px;
+    border: 0 none;
+}
+
+fieldset div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+input,
+textarea,
+select {
+    order: 2;
+    flex-basis: 15em;
+    flex-grow: 0;
+    flex-shrink: 1;
+    margin: 3px;
+    align-items: flex-end;
+}
+
+label {
+    order: 1;
+    text-align: right;
+    padding-right: 0.5em;
+    white-space: nowrap;
+    cursor: pointer;
+    width: calc(25%);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    order: 1;
+    flex: none;
+    width: auto;
+    margin-left: 1em;
+}
+
+input[type="checkbox"]~label,
+input[type="radio"]~label {
+    width: auto;
+    text-align: left;
+    padding-left: 0.4em;
+}
+
+
+/* label state styles */
+
+input:focus~label,
+textarea:focus~label,
+select:focus~label {
+    color: #933;
+}
+
+input:checked~label {
+    font-weight: bold;
+}
+
+#addDoc {
+    width: calc(20%);
+    font-weight: 700;
+    order: 1;
+    display: flex;
+    flex-basis: 1em;
+    align-items: flex-start;
+    background-color: #55eeff;
+    min-height: 2.5em;
+}
+
+#addDoc[type='button'] {
+    margin: 20px 0;
+}
+
+input[type='submit'] {
+    background-color: #06147a;
+    color: #fff;
+    font-weight: 700;
+    font-kerning: 1.2;
+    max-height: 3em;
+    width: calc(25%);
+    align-self: center;
+}
+
+.navbar-default {
+    background-color: #e8fdf9;
+    border-color: #e8fdf9;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #1d1d1d;
+}
+
+.navbar-nav>li:hover {
+    background-color: #137966;
+}
+
+.navbar-nav>li>a:hover {
+    color: #fff;
+    font-weight: 700;
 }

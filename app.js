@@ -36,7 +36,7 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set our application port
-app.set('nodeport', process.env.PORT || 9000);
+// app.set('nodeport', process.env.PORT || 9000);
 
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
@@ -63,8 +63,9 @@ app.use(session({
     }
 }));
 
-// This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
-// This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
+// This middleware will check if user's cookie is still saved in browser and user is not set, 
+// then automatically log the user out. This usually happens when you stop your express server 
+// after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
         res.clearCookie('user_sid');
@@ -86,7 +87,7 @@ app.get('/', (req, res) => {
     res.render('index', {
         title: 'Home Page',
         message: 'Please log into the dashboard to see your info.',
-        pgname: 'login'
+        pgname: 'home'
     })
 });
 
@@ -101,13 +102,12 @@ app.route('/signup')
     })
     .post((req, res) => {
         User.create({
-                username: req.body.username,
+                username: req.body.uname,
                 email: req.body.email,
                 city: req.body.city,
                 state: req.body.state,
                 zipcode: req.body.zipcode,
                 password: req.body.password
-
             })
             .then(user => {
                 req.session.user = user.dataValues;
@@ -122,7 +122,6 @@ app.route('/signup')
 // route for user Login
 app.route('/login')
     .get(sessionChecker, (req, res) => {
-
         res.render('login', { title: 'Login Page', pgname: 'login' });
     })
     .post((req, res) => {
@@ -131,7 +130,6 @@ app.route('/login')
 
         User.findOne({ where: { username: username } }).then(function(user) {
             if (!user) {
-
                 res.redirect('/login');
             } else if (!user.validPassword(password)) {
                 res.redirect('/login');
@@ -152,7 +150,6 @@ app.get('/dashboard', (req, res) => {
             state: req.session.user.state,
             pgname: 'dashboard'
         });
-        console.log(req.session);
     } else {
         res.redirect('/login');
     }
@@ -173,6 +170,18 @@ app.get('/logout', (req, res) => {
 // Check to see if a username is taken or not
 app.get('/validateUsername', (req, res) => {
     User.findOne({ where: { username: req.query.uname } }).then(function(user) {
+        if (!user) {
+            res.json(false);
+        } else {
+            res.json(true);
+        }
+    });
+
+});
+
+// Check to see if an email address is taken or not
+app.get('/validateEmail', (req, res) => {
+    User.findOne({ where: { email: req.query.email } }).then(function(user) {
         if (!user) {
             res.json(false);
         } else {
