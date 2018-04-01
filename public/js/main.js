@@ -132,7 +132,7 @@ function checkUsername() {
     var url = "//" + window.location.host + base_url + "/validateUsername";
     var uname = document.getElementById('uname').value;
     var params = '?uname=' + uname;
-    var errorMsg = document.getElementById('badUsername')
+    var errorMsg = document.getElementById('badUsername');
     http.open("GET", url + params, true);
 
     http.onreadystatechange = function() { //Call a function when the state changes.
@@ -140,6 +140,27 @@ function checkUsername() {
             $response = http.responseText;
             if ($response == 'true') {
                 errorMsg.innerHTML = "Username not available";
+            } else { errorMsg.innerHTML = ""; }
+        }
+    }
+    http.send();
+}
+
+function checkLoginUsername() {
+    var http = new XMLHttpRequest();
+    var str = window.location.pathname;
+    var base_url = str.slice(0, str.lastIndexOf("/"));
+    var url = "//" + window.location.host + base_url + "/validateUsername";
+    var uname = document.getElementById('username').value;
+    var params = '?uname=' + uname;
+    var errorMsg = document.getElementById('badUsername');
+    http.open("GET", url + params, true);
+
+    http.onreadystatechange = function() { //Call a function when the state changes.
+        if (http.readyState == 4 && http.status == 200) {
+            $response = http.responseText;
+            if ($response == 'true') {
+                errorMsg.innerHTML = "Username not registered";
             } else { errorMsg.innerHTML = ""; }
         }
     }

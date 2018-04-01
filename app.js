@@ -143,8 +143,10 @@ app.route('/login')
 // route for user's dashboard
 app.get('/dashboard', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
+        console.log(req.session.user);
         res.render('dashboard', {
             title: 'Personal Tracking Dashboard',
+            uname: req.session.user.username,
             zipcode: req.session.user.zipcode,
             city: req.session.user.city,
             state: req.session.user.state,
@@ -191,16 +193,6 @@ app.get('/validateEmail', (req, res) => {
 
 });
 
-app.get('/validateEmail', (req, res) => {
-    User.findOne({ where: { email: req.query.email } }).then(function(user) {
-        if (!user) {
-            res.json(false);
-        } else {
-            res.json(true);
-        }
-    });
-
-});
 
 // route for handling 404 requests(unavailable routes)
 app.use(function(req, res, next) {
