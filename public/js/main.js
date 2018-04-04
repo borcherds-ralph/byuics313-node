@@ -24,54 +24,54 @@ function updateCityState(zipValue, city, state) {
     // These next 3 lines are for getting the data from Weather Underground.
     // The apikey is unique to each user and must be updated for your own site
     var apikey = 'd704f31a50bce41f'
-    var divId = '';
+    var divId = ''; // This is for if you wish to dynamically set the DIV that the data is written to
     var isJSON = true;
-    // var zipValue = document.getElementById("zipcode").value;
+
+    // If there is a zipcode and the city is blank do a zipcode lookup to get the city and state for that zipcode.
     if (zipValue >= 5 && city == '') {
         if (ajax1) {
 
-            // client key to be able to use the zipcodeapi.com webiste to get date
+            // client key to be able to use the zipcodeapi.com webiste to get date.  Thi is WEB SITE URL specific so it cannot be used on any other website.
             var clientKey = 'js-1bXvnApFrAvwwBfDTkUtvYNh6CulyFDUktpERvCk73lioLE4s66GnNJEQrQAzk0p';
 
+            // Build the URL to request the city and state based upon the zipcode
             var url = "//www.zipcodeapi.com/rest/" + clientKey + "/info.json/" + zipValue + "/radians";
+
             ajax1.onreadystatechange =
                 function() {
 
                     // This next line checks to make sure that the file has finished being read and that it was read correctly.
                     if (ajax1.readyState == 4 && ajax1.status == 200) {
-                        // document.getElementById('serverState').innerHTML += "Ready State: " + ajax1.readyState + "  Status: " + ajax1.status + " start<BR>";
+                        // Parse the JSON returned data into a JavaScript Array
                         var data = JSON.parse(ajax1.responseText);
-                        var city = data['city']
-                        var state = data['state'];
+                        var city = data['city']; // Get the City name and assign it to a variable
+                        var state = data['state']; // Get the State name and assign it to a variable
 
-                        // These 6 lines get and write the weather data to the weather table
+                        // These 5 lines get and write the weather data to the weather table
                         var wuurl = "//api.wunderground.com/api/" + apikey + "/conditions/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
                         var wuurl2 = "//api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state.value + "/" + encodeURIComponent(city.value.trim()) + ".json";
-                        localStorage.clear();
                         readWeatherFile(wuurl, divId, isJSON);
                         readWeatherFile(wuurl2, divId, isJSON);
-
-                    } else {
-                        // document.getElementById('serverState').innerHTML += "Ready State: " + ajax1.readyState + "  Status: " + ajax1.status + "<BR>";
                     }
                 }
             ajax1.open("GET", url, true);
             ajax1.send();
         }
     } else {
-        // These 6 lines get and write the weather data to the weather table
+        // These 5 lines get and write the weather data to the weather table
+        // Build the 2 URL's needed to get all the data from Weather Underground
         var wuurl = "//api.wunderground.com/api/" + apikey + "/conditions/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
         var wuurl2 = "//api.wunderground.com/api/" + apikey + "/forecast10day/q/" + state + "/" + encodeURIComponent(city.trim()) + ".json";
-        localStorage.clear();
-        readWeatherFile(wuurl, divId, isJSON);
-        readWeatherFile(wuurl2, divId, isJSON);
+        // Call the AJAX calls to read the weather data and write it to the tables.
+        readWeatherFileCurrent(wuurl, divId, isJSON);
+        readWeatherFileForecast(wuurl2, divId, isJSON);
     }
 
 
 }
 
 
-function readWeatherFile(url, divId, isJSON) {
+function readWeatherFileCurrent(url, divId, isJSON) {
     /**********************************************
      * This function reads a JSON input file from the server.
      * input:   JSON Data File on the server
@@ -84,46 +84,95 @@ function readWeatherFile(url, divId, isJSON) {
 
     // Setup the object to only run when the file has finished being loaded
     ajax2.onreadystatechange =
-        //	This code is not executed immedidaitely. It is call later when the server starts to respond.
+        //	This code is not executed immediately. It is call later when the server starts to respond.
         function() {
-            // This next line checks to make sure that the file has finished being read and that it was read correctly.
+            // This next line checks to make sure that the file has finished being read and that it was read correctly. It does take 4 loops to get to where this will be true.
             if (ajax2.readyState == 4 && ajax2.status == 200) {
-                // document.getElementById('serverState').innerHTML += "WU Ready State 4: " + ajax2.readyState + "  Status: " + ajax2.status + "<br>";
 
                 var responseText = JSON.parse(ajax2.response);
                 if (isJSON) {
-                    var i = 0; // Set counter variable
-                    var x = 0;
-                    var test = responseText.current_observation;
-                    if (test === undefined) {
-                        var data = responseText.forecast.simpleforecast.forecastday;
+                    var i = 0,
+                        x = 0; // Set counter variables
+                    // Set a variable to the 2nd level array object so that you do not need to type all the levels every time.  
+                    // Example:  responseText.current_observation.display_location.full vs data.display_location.full
+                    var data = responseText.current_observation;
 
-                        for (index in data) {
-                            document.getElementById('day' + index).innerHTML = data[index]['date']['weekday_short'];
-                            document.getElementById('day' + index + 'temp').innerHTML = data[index]['high']['fahrenheit'];
-                            document.getElementById('day' + index + 'lowtemp').innerHTML = data[index]['low']['fahrenheit'];
-                        }
-                        document.getElementById('hightemp').innerHTML = data['0']['high']['fahrenheit'] + " F";
-                        document.getElementById('lowtemp').innerHTML = data['0']['low']['fahrenheit'] + " F";
-                        document.getElementById('chancepercperc').innerHTML = data['0']['pop'];
-                        document.getElementById('maxwindspeed').innerHTML = data['0']['maxwind']['mph'] + " mph";
+                    // Write the name of the city and state the weather data is for
+                    document.getElementById('cityname').innerHTML = data.display_location.full;
 
-                    } else {
-                        var data = responseText.current_observation;
-                        document.getElementById('cityname').innerHTML = data.display_location.full;
-                        document.getElementById('summary2').innerHTML = data.temp_f + " F"
+                    // Write the current temperature
+                    document.getElementById('summary2').innerHTML = data.temp_f + " F"
 
-                    }
                 }
-
-            } else { // this will show us what is happening before the data arrives
-                // document.getElementById('serverState').innerHTML += "WU Ready State: " + ajax2.readyState + "  Status: " + ajax2.status + "<br>";
             }
         }
-    ajax2.open("GET", url, false);
+        // Open the URL and issue a GET.  The false tells the system to run this in synchronized mode.
+    ajax2.open("GET", url, true);
+    // Execute the request for the URL
     ajax2.send();
 }
 
+function readWeatherFileForecast(url, divId, isJSON) {
+    /**********************************************
+     * This function reads a JSON input file from the server.
+     * input:   JSON Data File on the server
+     * Processing:  Takes this data and converts it to a JavaScript array.
+     *      It then finds the row number selected by the user and displays that data
+     * Output:   JavaScript Array of data.
+     *************************************************/
+
+    // Create the object to read the file data
+
+    // Setup the object to only run when the file has finished being loaded
+    ajax3.onreadystatechange =
+        //	This code is not executed immediately. It is call later when the server starts to respond.
+        function() {
+            // This next line checks to make sure that the file has finished being read and that it was read correctly. It does take 4 loops to get to where this will be true.
+            if (ajax3.readyState == 4 && ajax3.status == 200) {
+
+                var responseText = JSON.parse(ajax3.response);
+                if (isJSON) {
+                    var i = 0,
+                        x = 0; // Set counter variables
+
+                    // Set the data variable to be the forecastday array elements.  This is a 4th level deep array.  This is so you do not have to always type the 4 elements first.
+                    // example:  responseText.forecast.simpleforecast.forecastday[0]['date'] vs data[0]['date']
+                    var data = responseText.forecast.simpleforecast.forecastday;
+
+                    //  Loop through the new array object and create the HTML ID names based upon the index of the array and then populate the HTML data.
+                    //  'day'+ index will be day0, day1, etc through day9 for the ID names
+                    // data[index]['date'] is the short weekday name that will be written
+                    for (index in data) {
+                        document.getElementById('day' + index).innerHTML = data[index]['date']['weekday_short'];
+
+                        // This gets and write the forecast high temperature to the table
+                        document.getElementById('day' + index + 'temp').innerHTML = data[index]['high']['fahrenheit'];
+
+                        // This gets and writes the forecast low temperature to the table
+                        document.getElementById('day' + index + 'lowtemp').innerHTML = data[index]['low']['fahrenheit'];
+                    }
+
+                    // This is today forecast high temp
+                    document.getElementById('hightemp').innerHTML = data['0']['high']['fahrenheit'] + " F";
+
+                    // This is today forecast low temp
+                    document.getElementById('lowtemp').innerHTML = data['0']['low']['fahrenheit'] + " F";
+
+                    // Chance of precipitation forecast for the day
+                    document.getElementById('chancepercperc').innerHTML = data['0']['pop'];
+
+                    // Max wind speed recorded for the day so far
+                    document.getElementById('maxwindspeed').innerHTML = data['0']['maxwind']['mph'] + " mph";
+
+
+                }
+            }
+        }
+        // Open the URL and issue a GET.  The false tells the system to run this in synchronized mode.
+    ajax3.open("GET", url, true);
+    // Execute the request for the URL
+    ajax3.send();
+}
 
 function checkUsername() {
     var http = new XMLHttpRequest();
