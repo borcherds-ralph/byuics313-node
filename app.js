@@ -9,8 +9,10 @@ var session = require('express-session');
 var morgan = require('morgan');
 var User = require('./modules/user');
 var googleAnalytics = require('./modules/jwt.js');
-
+var favicon = require('serve-favicon');
 var app = express();
+
+
 
 // Read the DATABASE_URL environment variable and then parse it out. into the various parts.
 var db_url = url.parse(process.env.DATABASE_URL);
@@ -34,6 +36,7 @@ client.connect();
 
 // Set static Path
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'images/favicon.ico')));
 
 // set our application port
 // app.set('nodeport', process.env.PORT || 9000);
@@ -173,9 +176,9 @@ app.get('/logout', (req, res) => {
 app.get('/validateUsername', (req, res) => {
     User.findOne({ where: { username: req.query.uname } }).then(function(user) {
         if (!user) {
-            res.json(false);
+            res.json('false');
         } else {
-            res.json(true);
+            res.json('true');
         }
     });
 
