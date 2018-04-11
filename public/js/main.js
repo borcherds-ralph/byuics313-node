@@ -31,7 +31,7 @@ function updateCityState(zipValue, city, state) {
     if (zipValue >= 5 && city == '') {
         if (ajax1) {
 
-            // client key to be able to use the zipcodeapi.com webiste to get date.  Thi is WEB SITE URL specific so it cannot be used on any other website.
+            // client key to be able to use the zipcodeapi.com webiste to get date.  This is WEB SITE URL specific so it cannot be used on any other website.
             var clientKey = 'js-1bXvnApFrAvwwBfDTkUtvYNh6CulyFDUktpERvCk73lioLE4s66GnNJEQrQAzk0p';
 
             // Build the URL to request the city and state based upon the zipcode
@@ -102,6 +102,12 @@ function readWeatherFileCurrent(url, divId, isJSON) {
 
                     // Write the current temperature
                     document.getElementById('summary2').innerHTML = data.temp_f + " F"
+
+                    var windchill = data['windchill_f'];
+                    if (windchill != "NA") {
+                        $(".flex-order9").removeClass("hiddenitems");
+                        document.getElementById('windchillnow').innerHTML = windchill + "&deg; F";
+                    }
 
                 }
             }
