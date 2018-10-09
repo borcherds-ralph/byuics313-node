@@ -26,6 +26,7 @@
         "pify": "^3.0.0",
         "postgresql": "0.0.1",
         "qs": "^6.5.2",
+        "rc": "^1.2.8",
         "sequelize": "^4.39.0",
         "serve-favicon": "^2.5.0",
         "string-template": "^1.0.0",
