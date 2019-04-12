@@ -10,3 +10,8 @@ npm-debug.log
 # Docker
 Dockerfile
 docker-compose.yml
+
+
+#lock files
+package-lock.json
+google_key.json
