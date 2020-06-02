@@ -8,7 +8,7 @@ const { Client } = require('pg');
 var session = require('express-session');
 var morgan = require('morgan');
 var User = require('./modules/user');
-var googleAnalytics = require('./modules/jwt.js');
+// var googleAnalytics = require('./modules/jwt.js');
 var favicon = require('serve-favicon');
 var app = express();
 
